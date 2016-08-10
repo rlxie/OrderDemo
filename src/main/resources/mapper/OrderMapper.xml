@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thoughtworks.orderdemo.dao.OrderDao">
+
+	<select id="getOrderByOrderNo" resultType="com.thoughtworks.orderdemo.entity.Order">
+	 	select * from tw_order where orderNo = #{_parameter}
+	</select>
+
+	<update id="addOrder" parameterType="com.thoughtworks.orderdemo.entity.Order">
+		insert into tw_order(orderNo, orderContent) values(#{orderNo}, #{orderContent})
+	</update>
+
+	<delete id="removeOrderByOrderNo">
+		delete from tw_order where orderNo = #{_parameter}
+	</delete>
+
+</mapper>
