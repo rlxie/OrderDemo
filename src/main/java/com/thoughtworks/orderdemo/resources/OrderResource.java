@@ -24,8 +24,15 @@ public class OrderResource {
     @ResponseBody
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ErrorCode addOrder( @RequestBody Order order ) {
-        if( null != order &&  order.getOrderNo().length() == 0){
+        if( (null != order &&  order.getOrderNo().length() == 0 )){
             return new ErrorCode(Global.OrderErrorCode.ORDER_NO_HAS_NOT_NULL);
+        }
+        if( (null != order &&  order.getOrderContent().length() == 0 )){
+            return new ErrorCode(Global.OrderErrorCode.ORDER_CONTENT_HAS_NOT_NULL);
+        }
+        Order existOrder = orderServices.getOrderByOrderNo(order.getOrderNo());
+        if( null != existOrder ){
+            return new ErrorCode(Global.OrderErrorCode.ORDER_IS_ALREADY_EXIST);
         }
         int influenceQty = orderServices.addOrder(order);
         if( influenceQty != 0 ){
@@ -36,9 +43,9 @@ public class OrderResource {
 
     @RequestMapping(value = "/{orderNo}", method = RequestMethod.GET,produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Object getOrder(@PathVariable("orderNo") String orderNo) {
+    public ErrorCode getOrder(@PathVariable("orderNo") String orderNo) {
         Order order = orderServices.getOrderByOrderNo(orderNo);
-        ErrorCode errorCode = new ErrorCode(order);
+        ErrorCode errorCode = new ErrorCode(0, order);
         if( null == order ){
             errorCode.setErrorCode(Global.OrderErrorCode.CAN_NOT_FOUND_ORDER_BY_ORDERNO);
         }
@@ -50,6 +57,10 @@ public class OrderResource {
     public ErrorCode deleteOrder(@PathVariable("orderNo") String orderNo) {
         if( null == orderNo || orderNo.length() == 0){
             return new ErrorCode(Global.OrderErrorCode.ORDER_NO_HAS_NOT_NULL);
+        }
+        Order existOrder = orderServices.getOrderByOrderNo(orderNo);
+        if( null == existOrder ){
+            return new ErrorCode(Global.OrderErrorCode.CAN_NOT_FOUND_ORDER_BY_ORDERNO);
         }
         Order order = orderServices.getOrderByOrderNo(orderNo);
         int influenceQty = 0;

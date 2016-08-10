@@ -14,8 +14,8 @@ public class ErrorCode {
         this.resp = resp;
     }
 
-    public ErrorCode(Object resp){
-        this.resp = resp;
+    public ErrorCode(int errorCode){
+        this.errorCode = errorCode;
     }
 
     public ErrorCode(){}

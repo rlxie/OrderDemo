@@ -43,27 +43,27 @@
                     alert("订单内容不能为空");
                     return;
                 }
-                if( resp.errorCode == 0 )
-                {
-                    alert("订单号已存在,请勿重复添加");
-                }else{
-                    $.ajax({
-                        url: "/order/",
-                        data: JSON.stringify(getRequestData()),
-                        type: "POST",
-                        dataType: "JSON",
-                        contentType: "application/json",
-                        success: function(resp){
-                            if( resp.errorCode == 0 ){
-                                alert("订单添加成功");
-                            }else if( resp.errorCode == 10003){
-                                alert("订单号不能为空");
-                            }else{
-                                alert("添加订单失败");
-                            }
+                $.ajax({
+                    url: "/order/",
+                    data: JSON.stringify(getRequestData()),
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function(resp){
+                        if( resp.errorCode == 0 ){
+                            alert("订单添加成功");
+                        }else if( resp.errorCode == 10003){
+                            alert("订单号不能为空");
+                        }else if( resp.errorCode == 10006){
+                            alert("订单内容不能为空");
+                        }else if( resp.errorCode == 10005){
+                            alert("订单号已存在,请勿重复添加");
+                        }else{
+                            alert("添加订单失败");
                         }
-                    });
-                }
+                    }
+                });
+
             }
 
             function deleteOrderByCheckResponse(resp){
