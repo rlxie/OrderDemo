@@ -27,9 +27,7 @@ public class Order {
         this.orderNo = orderNo;
     }
 
-    public String getOrderContent() {
-        return orderContent;
-    }
+    public String getOrderContent() { return orderContent; }
 
     public void setOrderContent(String orderContent) {
         this.orderContent = orderContent;
