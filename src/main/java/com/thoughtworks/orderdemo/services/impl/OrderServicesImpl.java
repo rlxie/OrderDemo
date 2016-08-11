@@ -19,11 +19,13 @@ public class OrderServicesImpl implements OrderServices {
         return orderDao.getOrderByOrderNo(no);
     }
 
-    public int addOrder(Order o) {
-        return orderDao.addOrder(o);
+    public boolean addOrder(Order o) {
+        int influenceQty = orderDao.addOrder(o);
+        return influenceQty == 1 ? true : false;
     }
 
-    public int removeOrderByOrderNo(String no) {
-        return orderDao.removeOrderByOrderNo(no);
+    public boolean removeOrderByOrderNo(String no) {
+        int influenceQty = orderDao.removeOrderByOrderNo(no);
+        return influenceQty == 1 ? true : false;
     }
 }

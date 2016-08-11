@@ -9,7 +9,7 @@ public interface OrderServices {
 
     Order getOrderByOrderNo(String no);
 
-    int addOrder(Order o);
+    boolean addOrder(Order o);
 
-    int removeOrderByOrderNo(String no);
+    boolean removeOrderByOrderNo(String no);
 }
