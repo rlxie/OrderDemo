@@ -1,7 +1,5 @@
 package com.thoughtworks.orderdemo.entity;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Created by rlxie on 8/9/16.
  */
