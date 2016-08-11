@@ -22,7 +22,7 @@ public class OrderResource {
     private OrderServices orderServices;
 
     @ResponseBody
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ErrorCode addOrder( @RequestBody Order order ) {
         if( (null != order &&  order.getOrderNo().length() == 0 )){
             return new ErrorCode(Global.OrderErrorCode.ORDER_NO_HAS_NOT_NULL);

@@ -22,25 +22,25 @@
                 return {"orderNo": $orderNo.val(), "orderContent": $orderContent.val() };
             }
 
-            function checkOrderNoIsEmptyAndDo(doMethod){
+            function checkEmptyOrderAndDo(doMethod){
                 var errorMsg = "";
                 $.each(arguments, function(index, item){
                     if( 0 != index ){
                         if( $(item).val().length == 0 ){
                             errorMsg += $(item).attr("title");
-                            errorMsg += ", ";
+                            errorMsg += ",";
                         }
                     }
                 });
-
                 if( errorMsg.length == 0 ){
                     doMethod();
                 }else{
+                    errorMsg = errorMsg.substring(0, errorMsg.length - 1);
                     alert(errorMsg + " Cannot empty.");
                 }
             }
 
-            function addOrderByCheckResponse(resp){
+            function addOrderByCheckResponse(){
                 $.ajax({
                     url: "/order",
                     data: JSON.stringify(getRequestData()),
@@ -64,7 +64,7 @@
 
             }
 
-            function deleteOrderByCheckResponse(resp){
+            function deleteOrderByCheckResponse(){
                 $.ajax({
                     url: "/order/" + $orderNo.val(),
                     type: "DELETE",
@@ -100,11 +100,11 @@
             });
 
             $("#btnAddOrder").click(function(){
-                checkOrderNoIsEmptyAndDo(addOrderByCheckResponse, $orderNo, $orderContent);
+                checkEmptyOrderAndDo(addOrderByCheckResponse, $orderNo, $orderContent);
             });
 
             $("#btnDeleteOrder").click(function(){
-                checkOrderNoIsEmptyAndDo(deleteOrderByCheckResponse, $orderNo);
+                checkEmptyOrderAndDo(deleteOrderByCheckResponse, $orderNo);
             });
         })
     </script>
