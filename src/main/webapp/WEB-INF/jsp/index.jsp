@@ -10,10 +10,29 @@
     <p>Order Number:<input id="orderNo" type="text" title="Order Number"/></p>
     <p>Order Content:<input id="orderContent" type="text" title="Order Content"/></p>
     <p> <input id="btnAddOrder" type="button" value="Add Order" /> &nbsp; <input id="btnDeleteOrder" type="button" value="Delete Order" /></p>
+
+    <input type="button" id="test" value="test" />
+
     <script src="https://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
     <script src="https://cdn.rawgit.com/douglascrockford/JSON-js/master/json2.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
+
+            $("#test").click(function(){
+                $.ajax({
+                    url: "/order/111",
+                    type: "GET",
+                    contentType: "application/json",
+                    async:false,
+                    success: function(obj,msg,resp){
+                        console.log(a);
+                        console.log(b);
+                        console.log(c);
+                        console.log(d);
+                        console.log(e);
+                    }
+                });
+            });
 
             var $orderNo = $("#orderNo");
             var $orderContent = $("#orderContent");
@@ -36,7 +55,7 @@
                     doMethod();
                 }else{
                     errorMsg = errorMsg.substring(0, errorMsg.length - 1);
-                    alert(errorMsg + " Cannot empty.");
+                    alert(errorMsg + " Cannot Empty.");
                 }
             }
 
@@ -47,17 +66,18 @@
                     type: "POST",
                     dataType: "JSON",
                     contentType: "application/json",
-                    success: function(resp){
-                        if( resp.errorCode == 0 ){
-                            alert("Add Order success.");
-                        }else if( resp.errorCode == 10003){
-                            alert("Order Number cannot empty.");
-                        }else if( resp.errorCode == 10006){
-                            alert("Order Content cannot empty.");
-                        }else if( resp.errorCode == 10005){
-                            alert("Order Number already exist.");
+                    success: function(obj,msg,resp){
+                        if( 200 == resp.status ){
+                            alert("Add Order Success.");
+                        }
+                    },
+                    error: function(resp){
+                        if( resp.status == 422){
+                            alert("Order Number Or Content Cannot Empty.");
+                        }else if( resp.status == 409){
+                            alert("Order Number Already Exist.");
                         }else{
-                            alert("Add Order fail");
+                            alert("Add Order Fail");
                         }
                     }
                 });
@@ -69,15 +89,18 @@
                     url: "/order/" + $orderNo.val(),
                     type: "DELETE",
                     contentType: "application/json",
-                    success: function(resp){
-                        if( resp.errorCode == 0 ){
-                            alert("Delete Order success.");
-                        }else if( resp.errorCode == 10003){
-                            alert("Order Number cannot empty.");
-                        }else if( resp.errorCode == 10004){
-                            alert("Can not found this Order Number.");
+                    success: function(obj,msg,resp){
+                        if( 200 == resp.status ){
+                            alert("Delete Order Success.");
+                        }
+                    },
+                    error: function(resp){
+                        if( resp.status == 422){
+                            alert("Order Number Cannot Empty.");
+                        }else if( resp.status == 404){
+                            alert("Order Number Not Found.");
                         }else{
-                            alert("Delete Order fail.");
+                            alert("Delete Order Fail.");
                         }
                     }
                 });
@@ -89,12 +112,13 @@
                     type: "GET",
                     contentType: "application/json",
                     async:false,
-                    success: function(resp){
-                        var orderContent;
-                        if( resp.errorCode == 0 ){
-                            orderContent = resp.resp.orderContent;
+                    success: function(obj,msg,resp){
+                        if( 200 == resp.status ){
+                            $orderContent.val(obj.orderContent);
                         }
-                        $orderContent.val(orderContent);
+                    },
+                    error: function(resp){
+                        $orderContent.val("");
                     }
                 });
             });

@@ -2,10 +2,11 @@ package com.thoughtworks.orderdemo.resources;
 
 import com.thoughtworks.orderdemo.entity.Order;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -28,8 +29,8 @@ public class OrderResourceTest {
         Order order = new Order();
         order.setOrderNo("1212");
         order.setOrderContent("content");
-        ErrorCode errorCode = orderResource.addOrder(order);
-        Assert.assertEquals(errorCode.getErrorCode(), Global.SUCCESS);
+        ResponseEntity<Order> resp = orderResource.addOrder(order);
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
@@ -39,8 +40,8 @@ public class OrderResourceTest {
         Order order = new Order();
         order.setOrderNo("1212");
         order.setOrderContent("content");
-        ErrorCode errorCode = orderResource.addOrder(order);
-        Assert.assertEquals(errorCode.getErrorCode(), Global.OrderErrorCode.ORDER_IS_ALREADY_EXIST);
+        ResponseEntity<Order> resp = orderResource.addOrder(order);
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.CONFLICT);
     }
 
     @Test
@@ -48,8 +49,8 @@ public class OrderResourceTest {
         Order order = new Order();
         order.setOrderNo("");
         order.setOrderContent("content");
-        ErrorCode errorCode = orderResource.addOrder(order);
-        Assert.assertEquals(errorCode.getErrorCode(), Global.OrderErrorCode.ORDER_NO_HAS_NOT_NULL);
+        ResponseEntity<Order> resp = orderResource.addOrder(order);
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Test
@@ -57,45 +58,46 @@ public class OrderResourceTest {
         Order order = new Order();
         order.setOrderNo("987987");
         order.setOrderContent("");
-        ErrorCode errorCode = orderResource.addOrder(order);
-        Assert.assertEquals(errorCode.getErrorCode(), Global.OrderErrorCode.ORDER_CONTENT_HAS_NOT_NULL);
+        ResponseEntity<Order> resp = orderResource.addOrder(order);
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Test
     public void test_get_order(){
         test_add_order();
 
-        ErrorCode errorCode = orderResource.getOrder("1212");
-        Assert.assertEquals(errorCode.getErrorCode(), Global.SUCCESS);
+        ResponseEntity<Order> resp = orderResource.getOrder("1212");
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void test_get_a_not_exists_order(){
         orderResource.deleteOrder("1212");
 
-        ErrorCode errorCode = orderResource.getOrder("1212");
-        Assert.assertEquals(errorCode.getErrorCode(), Global.OrderErrorCode.CAN_NOT_FOUND_ORDER_BY_ORDERNO);
+        ResponseEntity<Order> resp = orderResource.getOrder("1212");
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.NOT_FOUND);
     }
 
     @Test
     public void test_delete_order(){
         test_add_order();
 
-        ErrorCode errorCode = orderResource.deleteOrder("1212");
-        Assert.assertEquals(errorCode.getErrorCode(), Global.SUCCESS);
+        ResponseEntity<Order> resp = orderResource.deleteOrder("1212");
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void test_delete_can_not_found_order(){
         test_delete_order();
 
-        ErrorCode errorCode = orderResource.deleteOrder("1212");
-        Assert.assertEquals(errorCode.getErrorCode(), Global.OrderErrorCode.CAN_NOT_FOUND_ORDER_BY_ORDERNO);
+        ResponseEntity<Order> resp = orderResource.deleteOrder("1212");
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.NOT_FOUND);
     }
 
     @Test
     public void test_delete_order_no_is_empty(){
-        ErrorCode errorCode = orderResource.deleteOrder("");
-        Assert.assertEquals(errorCode.getErrorCode(), Global.OrderErrorCode.ORDER_NO_HAS_NOT_NULL);
+        ResponseEntity<Order> resp = orderResource.deleteOrder("");
+        Assert.assertEquals(resp.getStatusCode(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
 }
