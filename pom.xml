@@ -187,6 +187,7 @@
             <version>2.2.3</version>
         </dependency>
         <!-- JSTL Support -->
+        <!--
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>javax.servlet.jsp.jstl</artifactId>
@@ -198,7 +199,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        -->
     </dependencies>
     <build>
         <finalName>orderdemo</finalName>
