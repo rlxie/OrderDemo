@@ -3,6 +3,7 @@ package com.thoughtworks.orderdemo.resources;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import com.thoughtworks.orderdemo.entity.Order;
 import com.thoughtworks.orderdemo.services.OrderServices;
+import com.thoughtworks.orderdemo.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class OrderResource {
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Order> addOrder(@RequestBody Order order ) {
-        if( !checkOrderIsEmpty(order) ){
+        if( checkOrderIsEmpty(order) ){
             return new ResponseEntity<Order>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if( checkOrderExistsByOrderNo(order.getOrderNo()) ){
@@ -48,7 +49,7 @@ public class OrderResource {
     @ResponseBody
     @RequestMapping(value = "/{orderNo}", method = RequestMethod.DELETE)
     public ResponseEntity<Order> deleteOrder(@PathVariable("orderNo") String orderNo) {
-        if( null == orderNo || orderNo.length() == 0){
+        if( StringUtil.newInstance().isEmpty(orderNo) ){
             return new ResponseEntity<Order>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         boolean addResult = false;
@@ -69,26 +70,26 @@ public class OrderResource {
     }
 
     private boolean checkOrderIsEmpty(Order order){
-        if( !checkOrderNoIsEmpty(order) ){
-            return false;
+        if( checkOrderNoIsEmpty(order) ){
+            return true;
         }
-        if( !checkOrderContentIsEmpty(order) ){
-            return false;
+        if( checkOrderContentIsEmpty(order) ){
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean checkOrderNoIsEmpty(Order order){
-        if( (null != order && order.getOrderNo().length() == 0 )){
-            return false;
+        if( null != order && StringUtil.newInstance().isEmpty(order.getOrderNo()) ){
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean checkOrderContentIsEmpty(Order order){
-        if( (null != order && order.getOrderContent().length() == 0 )){
-            return false;
+        if( null != order && StringUtil.newInstance().isEmpty(order.getOrderContent()) ){
+            return true;
         }
-        return true;
+        return false;
     }
 }
