@@ -10,29 +10,10 @@
     <p>Order Number:<input id="orderNo" type="text" title="Order Number"/></p>
     <p>Order Content:<input id="orderContent" type="text" title="Order Content"/></p>
     <p> <input id="btnAddOrder" type="button" value="Add Order" /> &nbsp; <input id="btnDeleteOrder" type="button" value="Delete Order" /></p>
-
-    <input type="button" id="test" value="test" />
-
     <script src="https://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
     <script src="https://cdn.rawgit.com/douglascrockford/JSON-js/master/json2.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
-
-            $("#test").click(function(){
-                $.ajax({
-                    url: "/order/111",
-                    type: "GET",
-                    contentType: "application/json",
-                    async:false,
-                    success: function(obj,msg,resp){
-                        console.log(a);
-                        console.log(b);
-                        console.log(c);
-                        console.log(d);
-                        console.log(e);
-                    }
-                });
-            });
 
             var $orderNo = $("#orderNo");
             var $orderContent = $("#orderContent");
