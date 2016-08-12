@@ -31,7 +31,8 @@ public class OrderResource {
             return new ResponseEntity<Order>(HttpStatus.CONFLICT);
         }
         if( orderServices.addOrder(order) ){
-            return new ResponseEntity<Order>(order, HttpStatus.OK);
+            Order newOrder = orderServices.getOrderByOrderNo(order.getOrderNo());
+            return new ResponseEntity<Order>(newOrder, HttpStatus.OK);
         }
         return new ResponseEntity<Order>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
