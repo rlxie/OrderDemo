@@ -1,6 +1,5 @@
 package com.thoughtworks.orderdemo.resources;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import com.thoughtworks.orderdemo.entity.Order;
 import com.thoughtworks.orderdemo.services.OrderServices;
 import com.thoughtworks.orderdemo.util.StringUtil;
@@ -53,13 +52,13 @@ public class OrderResource {
         if( StringUtil.newInstance().isEmpty(orderNo) ){
             return new ResponseEntity<Order>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        boolean addResult = false;
+        boolean deleteResult = false;
         if( !checkOrderExistsByOrderNo(orderNo) ){
             return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
         }else{
-            addResult = orderServices.removeOrderByOrderNo(orderNo);
+            deleteResult = orderServices.removeOrderByOrderNo(orderNo);
         }
-        if( addResult ) {
+        if( deleteResult ) {
             return new ResponseEntity<Order>(HttpStatus.OK);
         }
         return new ResponseEntity<Order>(HttpStatus.INTERNAL_SERVER_ERROR);
